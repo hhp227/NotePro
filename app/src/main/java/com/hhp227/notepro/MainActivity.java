@@ -78,9 +78,11 @@ public class MainActivity extends AppCompatActivity {
             String memo = data.getStringExtra("memo");
             //array.set(pos, memo);
             notes.set(pos, memo);
+            myDB.updateMemo(memo, String.valueOf(pos));
         } else if(requestCode == REQUEST_CODE_SET && resultCode == RESULT_FIRST_USER) {
             //array.remove(pos);
             notes.remove(pos);
+            myDB.deleteMemo(String.valueOf(13));
         }
         arrayAdapter.notifyDataSetChanged();
     }

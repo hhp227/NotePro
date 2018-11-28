@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyDB extends SQLiteOpenHelper {
+    SQLiteDatabase db;
     public MyDB(Context context) {
         super(context, "My DB", null, 1);
     }
@@ -24,13 +25,13 @@ public class MyDB extends SQLiteOpenHelper {
     }
 
     public void insertMemo(String contents) {
-        SQLiteDatabase db = getWritableDatabase();
+        db = getWritableDatabase();
         String[] args = {contents};
         db.execSQL("INSERT INTO note(contents) VALUES (?)", args);
     }
 
     public List<String> selectMemo() {
-        SQLiteDatabase db = getReadableDatabase();
+        db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM note", null);
 
         List<String> notes = new ArrayList<>();
@@ -41,5 +42,17 @@ public class MyDB extends SQLiteOpenHelper {
         }
         db.close();
         return notes;
+    }
+
+    public void updateMemo(String contents, String idx) {
+        db = getWritableDatabase();
+        String[] args = {contents, idx};
+        db.execSQL("UPDATE note SET contents = (?) WHERE idx = (?)", args);
+    }
+
+    public void deleteMemo(String idx) {
+        db = getWritableDatabase();
+        String[] args = {idx};
+        db.execSQL("DELETE FROM note WHERE idx = (?)", args);
     }
 }
